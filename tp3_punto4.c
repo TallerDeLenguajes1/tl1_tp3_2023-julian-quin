@@ -20,7 +20,7 @@ struct {
                        // “CantidadProductosAPedir”
 } typedef Clientes;
 
-void cargarClientela( Clientes * clientela, int cantClientes, char *buff );
+void cargarClientela( Clientes * clientela, int cantClientes);
 void cargarProductos(Producto * Producto, int cantProducto );
 void mostrado(Clientes *arreglo, int cant);
 void fri (Clientes *clientela, int cantClientes);
@@ -30,16 +30,16 @@ void fri (Clientes *clientela, int cantClientes);
 int main (void)
 {
     int cantClientes;
-    char *buff= (char *) malloc (sizeof(char) *100);
+    char *buff;
+    buff = (char *) malloc (sizeof(char) *100);
     Clientes *clientela;
     srand(time(NULL));
-    clientela= (Clientes *) malloc (sizeof(Clientes)*cantClientes);
     puts("Ingresa la cantidad de clientes");
     scanf("%d",&cantClientes);
-    cargarClientela(clientela,cantClientes,buff);
+    clientela= (Clientes *) malloc(sizeof(Clientes)*cantClientes);
+    cargarClientela(clientela,cantClientes);
     mostrado(clientela,cantClientes);
-    //fri(clientela,cantClientes);
-    free(buff);
+    fri(clientela,cantClientes);
     return 0;
 }
 
@@ -47,21 +47,23 @@ int main (void)
 
 
 
-void cargarClientela( Clientes * clientela, int cantClientes, char *buff)
+void cargarClientela( Clientes * clientela, int cantClientes)
 {
 
     for (int i = 0; i < cantClientes; i++)
     {
+        char nombre[20];
         printf("CLIENTE N %d\n",i+1);
         clientela[i].ClienteID=i;
         printf("nombre: ");
         fflush(stdin);
-        gets(buff);
-        clientela[i].NombreCliente = (char*) malloc(sizeof(char) * (strlen(buff)+1));
-        strcpy((clientela[i].NombreCliente),buff);   // sin los parentesis no funciona
-        clientela[i].CantidadProductosAPedir= rand ()% (5-1)+1;
-        clientela[i].Productos= (Producto *)malloc (sizeof(Producto)*clientela[i].CantidadProductosAPedir);
-        cargarProductos(clientela[i].Productos,clientela[i].CantidadProductosAPedir);
+        gets(nombre);
+        clientela[i].NombreCliente = (char *) malloc((strlen(nombre)+1) * sizeof(char));
+        strcpy((clientela[i].NombreCliente),nombre);   // sin los parentesis no funciona
+        clientela[i].CantidadProductosAPedir = rand () % (5-1)+1;
+        clientela[i].Productos= (Producto *)malloc(sizeof(Producto)*clientela[i].CantidadProductosAPedir);
+        cargarProductos((clientela[i].Productos),(clientela[i].CantidadProductosAPedir));
+        puts("-----------------------");
 
     }
     
@@ -75,7 +77,7 @@ void cargarProductos( Producto * Producto, int cantProducto )
         Producto[i].Cantidad= rand () % (10-1)+1;
         Producto[i].TipoProducto = TiposProductos[rand ()% 4]; //es como que le estoy dando una direccion de
                                                                // memoria a tipo producto con las cajas ya cargadas ?
-        Producto[i].PrecioUnitario= rand () % (100-1)+1;
+        Producto[i].PrecioUnitario=rand () % (100-10)+10;
     }
     
 }
@@ -90,7 +92,7 @@ void mostrado( Clientes *arreglo, int cant)
         printf("CLIENTE N: (%d)\n\n", k + 1);
         printf("NOMBRES: %s\n", arreglo[k].NombreCliente);
         printf("CANTIDAD DE PRODUCTOS: %d\n",arreglo[k].CantidadProductosAPedir);
-        //printf("\n");
+        printf("\n");
         for (int i = 0; i < arreglo[k].CantidadProductosAPedir; i++)
         {
             printf("\tProducto N %d\n", i + 1);
