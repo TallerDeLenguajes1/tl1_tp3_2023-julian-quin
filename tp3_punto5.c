@@ -34,6 +34,7 @@ int main(void)
         printf("nombre (%d) %s\n", i + 1, V[i]);
         free(V[i]);
     }
+    free(V);
     free(buff);
 
     return 0;
