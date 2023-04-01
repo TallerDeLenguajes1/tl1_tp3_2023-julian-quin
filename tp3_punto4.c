@@ -4,12 +4,13 @@
 #include <string.h>
 
 char *TiposProductos[]={"Galletas","Snack","Cigarrillos","Caramelos","Bebidas"}; // cada componente es un puntero con cajas cargadas?
-
+float costos[5];
 struct {
     int ProductoID; //Numerado en ciclo iterativo
     int Cantidad; // entre 1 y 10
     char *TipoProducto; // Algún valor del arreglo TiposProductos
     float PrecioUnitario; // entre 10 - 100
+    float constoTotal;
 } typedef Producto;
 
 struct {
@@ -23,6 +24,7 @@ struct {
 void cargarClientela( Clientes * clientela, int cantClientes);
 void cargarProductos(Producto * Producto, int cantProducto );
 void mostrado(Clientes *arreglo, int cant);
+float costoProducto(Producto *producto,int cantPro);
 void fri (Clientes *clientela, int cantClientes);
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<< ACÁ MAIN >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -34,7 +36,7 @@ int main (void)
     buff = (char *) malloc (sizeof(char) *100);
     Clientes *clientela;
     srand(time(NULL));
-    puts("Ingresa la cantidad de clientes");
+    puts("Ingresa la cantidad de clientes (hasta 5)");
     scanf("%d",&cantClientes);
     clientela= (Clientes *) malloc(sizeof(Clientes)*cantClientes);
     cargarClientela(clientela,cantClientes);
@@ -59,10 +61,12 @@ void cargarClientela( Clientes * clientela, int cantClientes)
         fflush(stdin);
         gets(nombre);
         clientela[i].NombreCliente = (char *) malloc((strlen(nombre)+1) * sizeof(char));
-        strcpy((clientela[i].NombreCliente),nombre);   // sin los parentesis no funciona
+        strcpy(clientela[i].NombreCliente,nombre); 
         clientela[i].CantidadProductosAPedir = rand () % (5-1)+1;
         clientela[i].Productos= (Producto *)malloc(sizeof(Producto)*clientela[i].CantidadProductosAPedir);
         cargarProductos((clientela[i].Productos),(clientela[i].CantidadProductosAPedir));
+        costos[i] = costoProducto(clientela[i].Productos,clientela[i].CantidadProductosAPedir);
+        //printf("cantidad total cliente %d = %.2f",i+1,costos[i]);
         puts("-----------------------");
 
     }
@@ -75,11 +79,10 @@ void cargarProductos( Producto * Producto, int cantProducto )
     {
         Producto[i].ProductoID=i;
         Producto[i].Cantidad= rand () % (10-1)+1;
-        Producto[i].TipoProducto = TiposProductos[rand ()% 4]; //es como que le estoy dando una direccion de
-                                                               // memoria a tipo producto con las cajas ya cargadas ?
+        Producto[i].TipoProducto = TiposProductos[rand () % 4]; //es como que le estoy dando una direccion de
+                                                       // memoria a tipo producto con las cajas ya cargadas ?
         Producto[i].PrecioUnitario=rand () % (100-10)+10;
     }
-    
 }
 
 void mostrado( Clientes *arreglo, int cant)
@@ -102,6 +105,7 @@ void mostrado( Clientes *arreglo, int cant)
             printf("precio unitario: %.2f\n", arreglo[k].Productos[i].PrecioUnitario);
             printf("\n");
         }
+        printf("\n\t\tTOTAL: %.2f\n",costos[k]);
         printf("\n");
         puts("===================================");
         printf("\n");
@@ -109,6 +113,18 @@ void mostrado( Clientes *arreglo, int cant)
     puts("-----------------------------------");
 
 }
+float costoProducto(Producto *producto, int cantPro)
+{
+    int TotalPro=0;
+    for (int i = 0; i < cantPro; i++)
+    {
+        TotalPro += (producto->Cantidad) * (producto->PrecioUnitario);
+        producto++;
+    }
+    
+    return (TotalPro);
+}
+
 void fri (Clientes *clientela, int cantClientes)
 {
     for (int i = 0; i < cantClientes; i++)
