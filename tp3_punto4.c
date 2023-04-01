@@ -32,8 +32,6 @@ void fri (Clientes *clientela, int cantClientes);
 int main (void)
 {
     int cantClientes;
-    char *buff;
-    buff = (char *) malloc (sizeof(char) *100);
     Clientes *clientela;
     srand(time(NULL));
     puts("Ingresa la cantidad de clientes (hasta 5)");
@@ -45,7 +43,7 @@ int main (void)
     return 0;
 }
 
-
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<< FIN MAIN <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
 
@@ -66,8 +64,7 @@ void cargarClientela( Clientes * clientela, int cantClientes)
         clientela[i].Productos= (Producto *)malloc(sizeof(Producto)*clientela[i].CantidadProductosAPedir);
         cargarProductos((clientela[i].Productos),(clientela[i].CantidadProductosAPedir));
         costos[i] = costoProducto(clientela[i].Productos,clientela[i].CantidadProductosAPedir);
-        //printf("cantidad total cliente %d = %.2f",i+1,costos[i]);
-        puts("-----------------------");
+        puts("-------------------");
 
     }
     
@@ -93,7 +90,7 @@ void mostrado( Clientes *arreglo, int cant)
     for (int k = 0; k < cant; k++)
     {
         printf("CLIENTE N: (%d)\n\n", k + 1);
-        printf("NOMBRES: %s\n", arreglo[k].NombreCliente);
+        printf("NOMBRE: %s\n", arreglo[k].NombreCliente);
         printf("CANTIDAD DE PRODUCTOS: %d\n",arreglo[k].CantidadProductosAPedir);
         printf("\n");
         for (int i = 0; i < arreglo[k].CantidadProductosAPedir; i++)
